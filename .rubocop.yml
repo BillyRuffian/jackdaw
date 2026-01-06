@@ -1,0 +1,32 @@
+AllCops:
+  TargetRubyVersion: 4.0
+  NewCops: enable
+  SuggestExtensions: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+# CLI classes naturally have many public methods
+Metrics/ClassLength:
+  Max: 200
+
+# CLI methods often have longer implementations for user output
+Metrics/MethodLength:
+  Max: 50
+
+# CLI build methods have inherent complexity
+Metrics/AbcSize:
+  Max: 60
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 12
+
+# CLI classes don't need top-level documentation
+Style/Documentation:
+  Enabled: false
