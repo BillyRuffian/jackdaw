@@ -197,7 +197,7 @@ module Jackdaw
 
       # Inject reload script into HTML responses
       if headers['Content-Type']&.include?('text/html')
-        body = ''
+        body = +'' # Unary plus makes it mutable
         response.each { |part| body << part }
 
         if body.include?('</body>')

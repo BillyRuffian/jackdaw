@@ -238,7 +238,7 @@ RSpec.describe 'End-to-end build workflow' do
   describe 'RSS/Atom feeds and sitemap' do
     it 'generates feeds and sitemap for sites with blog posts' do
       setup_complete_site
-      
+
       builder = Jackdaw::Builder.new(project)
       builder.build
 
@@ -273,7 +273,7 @@ RSpec.describe 'End-to-end build workflow' do
       # Should not generate feeds without blog posts
       expect(File.exist?(File.join(project.output_dir, 'feed.xml'))).to be false
       expect(File.exist?(File.join(project.output_dir, 'atom.xml'))).to be false
-      
+
       # But should still generate sitemap
       expect(File.exist?(File.join(project.output_dir, 'sitemap.xml'))).to be true
     end

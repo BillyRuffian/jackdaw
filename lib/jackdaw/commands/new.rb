@@ -8,7 +8,7 @@ module Jackdaw
 
       def initialize(name)
         @name = name
-        @site_dir = "#{name}.site"
+        @site_dir = name.end_with?('.site') ? name : "#{name}.site"
       end
 
       def execute
