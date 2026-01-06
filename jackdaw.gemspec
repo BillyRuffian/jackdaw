@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
                      'incremental builds, and developer experience. Build 600 files in under 1 second with ' \
                      'parallel processing, live reload, and zero configuration required.'
   spec.homepage = 'https://github.com/BilyRuffian/jackdaw'
-  spec.required_ruby_version = '>= 4.0.0'
+  spec.required_ruby_version = '>= 3.4.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/yourusername/jackdaw'
