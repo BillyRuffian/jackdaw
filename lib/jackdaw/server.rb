@@ -162,7 +162,7 @@ module Jackdaw
         (function() {
           let lastCheck = Date.now();
           setInterval(function() {
-            fetch('/__rhes_reload_check')
+            fetch('/__jackdaw_reload_check')
               .then(r => r.json())
               .then(data => {
                 if (data.lastBuild > lastCheck) {
@@ -185,7 +185,7 @@ module Jackdaw
 
     def call(env)
       # Handle reload check endpoint
-      if env['PATH_INFO'] == '/__rhes_reload_check'
+      if env['PATH_INFO'] == '/__jackdaw_reload_check'
         return [
           200,
           { 'Content-Type' => 'application/json' },

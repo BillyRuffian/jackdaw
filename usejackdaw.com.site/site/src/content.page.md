@@ -143,24 +143,10 @@ You can include HTML:
 The first paragraph becomes the excerpt:
 
 ```markdown
----
-title: My Post
----
 
 This paragraph is automatically used as the excerpt.
 
 This is regular content.
-```
-
-Or set it manually:
-
-```markdown
----
-title: My Post
-excerpt: Custom excerpt here
----
-
-Content...
 ```
 
 ## Nested Content

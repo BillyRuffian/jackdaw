@@ -150,10 +150,6 @@ jackdaw create blog "Building Fast Sites"
 3. **Edit the content** (`site/src/2026-01-06-building-fast-sites.blog.md`):
 
 ```markdown
----
-title: Building Fast Sites
-excerpt: Learn how to build lightning-fast static sites
----
 
 # Building Fast Sites
 
