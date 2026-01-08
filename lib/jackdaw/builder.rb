@@ -15,6 +15,8 @@ module Jackdaw
 
     # Run full build
     def build
+      # Reset stats for this build
+      @stats = BuildStats.new
       start_time = Time.now
 
       # Clean if requested
@@ -137,7 +139,18 @@ module Jackdaw
       layout_file = File.join(project.templates_dir, 'layout.html.erb')
       return true if File.exist?(layout_file) && File.mtime(layout_file) > output_mtime
 
+      # Check if any partials are newer
+      return true if any_partial_newer?(output_mtime)
+
       false
+    end
+
+    def any_partial_newer?(output_mtime)
+      # Get all partial files (starting with _)
+      partial_pattern = File.join(project.templates_dir, '_*.erb')
+      Dir.glob(partial_pattern).any? do |partial_file|
+        File.mtime(partial_file) > output_mtime
+      end
     end
 
     def needs_asset_copy?(asset_file)

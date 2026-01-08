@@ -8,7 +8,7 @@
 
 <div class="content" markdown="1">
 
-Jackdaw is a minimal, fast static site generator that emphasizes:
+Jackdaw is a minimal, fast static site generator that emphasises:
 
 - **Speed** - Build 600 files in under 1 second with parallel processing
 - **Convention over configuration** - Zero config required to get started

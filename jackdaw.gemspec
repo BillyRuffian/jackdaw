@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'kramdown', '~> 2.4'
   spec.add_dependency 'kramdown-parser-gfm', '~> 1.1'
   spec.add_dependency 'listen', '~> 3.9'
+  spec.add_dependency 'logger', '~> 1.7'
   spec.add_dependency 'parallel', '~> 1.24'
   spec.add_dependency 'puma', '~> 6.4'
   spec.add_dependency 'rack', '~> 3.0'

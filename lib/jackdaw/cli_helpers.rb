@@ -27,7 +27,12 @@ module Jackdaw
     end
 
     def header(text)
-      puts "\n#{COLORS[:bold]}#{COLORS[:magenta]}#{text}#{COLORS[:reset]}"
+      puts "#{COLORS[:bold]}#{COLORS[:magenta]}#{text}#{COLORS[:reset]}"
+    end
+
+    def version_banner
+      puts "🐦 #{colorize('Jackdaw', :bold)} #{colorize("v#{Jackdaw::VERSION}", :cyan)}"
+      puts ''
     end
   end
 end

@@ -18,7 +18,7 @@ module Jackdaw
     # Start the server
     def start
       # Initial build
-      puts "\n#{colorize('🚀 Building site...', :magenta)}"
+      puts "#{colorize('🚀 Building site...', :magenta)}"
       stats = builder.build
       show_build_stats(stats)
 
@@ -30,7 +30,13 @@ module Jackdaw
       puts colorize('Press Ctrl+C to stop', :magenta)
       puts ''
 
-      Rack::Handler::Puma.run(rack_app, Port: port, Host: host, Silent: true)
+      # Build and start the Rack app
+      app = rack_app
+
+      # Notify that initial build is complete (sets counter to 1)
+      notify_reload if @livereload
+
+      Rack::Handler::Puma.run(app, Port: port, Host: host, Silent: true)
     end
 
     def livereload?
@@ -40,11 +46,16 @@ module Jackdaw
     private
 
     def rack_app
-      server = self
-      Rack::Builder.new do
-        use Rack::CommonLogger
-        use LiveReloadMiddleware, server if server.livereload?
-        run StaticFileServer.new(server.project)
+      static_server = StaticFileServer.new(project)
+
+      # Create the middleware instance if livereload is enabled
+      if @livereload
+        @livereload_middleware = LiveReloadMiddleware.new(static_server, self)
+        # Return an app that chains CommonLogger -> LiveReload -> StaticServer
+        Rack::CommonLogger.new(@livereload_middleware)
+      else
+        # No livereload, just CommonLogger -> StaticServer
+        Rack::CommonLogger.new(static_server)
       end
     end
 
@@ -88,8 +99,7 @@ module Jackdaw
     end
 
     def notify_reload
-      # In a real implementation, this would notify WebSocket clients
-      # For now, the LiveReloadMiddleware handles it with polling
+      @livereload_middleware&.update_build_time
     end
 
     def colorize(text, color)
@@ -137,7 +147,16 @@ module Jackdaw
       content = File.read(path)
       content_type = mime_type(path)
 
-      [200, { 'Content-Type' => content_type, 'Content-Length' => content.bytesize.to_s }, [content]]
+      headers = {
+        'Content-Type' => content_type,
+        'Content-Length' => content.bytesize.to_s,
+        # Disable caching in development for assets
+        'Cache-Control' => 'no-cache, no-store, must-revalidate',
+        'Pragma' => 'no-cache',
+        'Expires' => '0'
+      }
+
+      [200, headers, [content]]
     end
 
     def mime_type(path)
@@ -160,16 +179,17 @@ module Jackdaw
     RELOAD_SCRIPT = <<~JS
       <script>
         (function() {
-          let lastCheck = Date.now();
+          let lastBuild = null;
           setInterval(function() {
             fetch('/__jackdaw_reload_check')
               .then(r => r.json())
               .then(data => {
-                if (data.lastBuild > lastCheck) {
+                if (lastBuild !== null && data.lastBuild > lastBuild) {
                   console.log('Jackdaw: Reloading page...');
-                  location.reload();
+                  // Force hard reload to bypass cache for CSS/JS changes
+                  window.location.reload(true);
                 }
-                lastCheck = Date.now();
+                lastBuild = data.lastBuild;
               })
               .catch(() => {});
           }, 1000);
@@ -180,7 +200,11 @@ module Jackdaw
     def initialize(app, server)
       @app = app
       @server = server
-      @last_build = Time.now
+      @build_count = 0
+    end
+
+    def update_build_time
+      @build_count += 1
     end
 
     def call(env)
@@ -189,7 +213,7 @@ module Jackdaw
         return [
           200,
           { 'Content-Type' => 'application/json' },
-          [JSON.generate({ lastBuild: @last_build.to_f })]
+          [JSON.generate({ lastBuild: @build_count })]
         ]
       end
 
@@ -202,7 +226,6 @@ module Jackdaw
 
         if body.include?('</body>')
           body = body.sub('</body>', "#{RELOAD_SCRIPT}</body>")
-          @last_build = Time.now
           headers['Content-Length'] = body.bytesize.to_s
           response = [body]
         end

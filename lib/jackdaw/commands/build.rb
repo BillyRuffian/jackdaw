@@ -14,6 +14,7 @@ module Jackdaw
       def execute
         return handle_missing_project unless @project.exists?
 
+        version_banner
         header('🚀 Building your site...')
         info('Cleaning output directory...') if @options[:clean]
 

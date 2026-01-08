@@ -17,6 +17,8 @@ module Jackdaw
           exit 1
         end
 
+        version_banner
+
         server = Server.new(@project, @options)
         server.start
       rescue Interrupt

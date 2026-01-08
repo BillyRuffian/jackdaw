@@ -5,6 +5,15 @@ All notable changes to Jackdaw will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-01-08
+
+### Fixed
+- Fixed hot reload functionality in development server - browser now properly detects file changes and refreshes automatically
+- Improved live reload middleware to use build counter instead of timestamps for more reliable change detection
+- Fixed partial template changes not triggering rebuilds - changes to partials (e.g., `_nav.html.erb`, `_footer.html.erb`) now properly rebuild all affected pages
+- Fixed build statistics accumulating across multiple rebuilds - stats now reset correctly for each build
+- Added hot reload support for assets (CSS, JS, images) - changes to assets now trigger browser refresh with cache-busting
+
 ## [1.0.0] - 2026-01-06
 
 ### Added
