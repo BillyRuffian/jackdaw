@@ -12,12 +12,12 @@ Gem::Specification.new do |spec|
   spec.description = 'Jackdaw is a minimal, fast static site generator that emphasizes speed, ' \
                      'incremental builds, and developer experience. Build 600 files in under 1 second with ' \
                      'parallel processing, live reload, and zero configuration required.'
-  spec.homepage = 'https://github.com/BilyRuffian/jackdaw'
+  spec.homepage = 'https://usejackdaw.com'
   spec.required_ruby_version = '>= 3.4.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/yourusername/jackdaw'
-  spec.metadata['changelog_uri'] = 'https://github.com/yourusername/jackdaw/blob/main/CHANGELOG.md'
+  spec.metadata['source_code_uri'] = 'https://github.com/BillyRuffian/jackdaw'
+  spec.metadata['changelog_uri'] = 'https://github.com/BillyRuffian/jackdaw/blob/main/CHANGELOG.md'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   # Specify which files should be added to the gem when it is released.
