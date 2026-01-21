@@ -35,6 +35,7 @@ module Jackdaw
 
         create_starter_templates(project)
         create_example_content(project)
+        create_robots_txt(project)
         create_gitignore(project)
 
         success("Site created at #{colorize(@site_dir, :cyan)}")
@@ -149,6 +150,15 @@ module Jackdaw
           .DS_Store
         IGNORE
         success('Created .gitignore')
+      end
+
+      def create_robots_txt(project)
+        robots_txt = File.join(project.assets_dir, 'robots.txt')
+        File.write(robots_txt, <<~ROBOTS)
+          User-agent: *
+          Allow: /
+        ROBOTS
+        success('Created robots.txt')
       end
 
       def show_next_steps
